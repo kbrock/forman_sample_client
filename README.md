@@ -12,22 +12,29 @@ was trivial to run `Net::HTTP` + `ext/net_http.rb`. this combination seems to be
 **faster** than HTTPI with `curb`, giving me confidence that `ext/net_http.rb`
 does not introduce a significant performance hit.
 
+tests were run one at a time and in order. tests were performed multiple times,
+but no data analysis was done beyond visually ensuring the results "looked close"
+between runs.
+
 here are some sample runs:
 
     % bundle exec ./benchmark/apipie.rb https://theforeman.example.com
            user     system      total        real
-       0.000000   0.000000   0.000000 (  0.000384)
-       0.190000   0.020000   0.210000 (  2.443758)
-      13.140000   0.570000  13.710000 (194.143426)
+       0.000000   0.000000   0.000000 (  0.000393)
+       0.210000   0.010000   0.220000 (  3.783021)
+      13.030000   0.460000  13.490000 (191.435855)
+    Hosts collected: 78
 
     % bundle exec ./benchmark/httpi-curb.rb https://theforeman.example.com
            user     system      total        real
-       0.000000   0.000000   0.000000 (  0.000007)
-       0.010000   0.000000   0.010000 (  0.124643)
-       0.860000   0.130000   0.990000 (  7.236611)
+       0.000000   0.000000   0.000000 (  0.000009)
+       0.010000   0.000000   0.010000 (  0.091757)
+       0.770000   0.100000   0.870000 (  6.935639)
+    Hosts collected: 78
 
     % bundle exec ./benchmark/httpi-net_http.rb https://theforeman.example.com
            user     system      total        real
-       0.000000   0.000000   0.000000 (  0.000007)
-       0.020000   0.010000   0.030000 (  0.236881)
-       0.930000   0.090000   1.020000 (  6.479033)
+       0.000000   0.000000   0.000000 (  0.000006)
+       0.030000   0.000000   0.030000 (  0.110068)
+       0.960000   0.120000   1.080000 (  6.727047)
+    Hosts collected: 78
