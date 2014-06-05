@@ -3,7 +3,7 @@
 require 'json'
 require 'httpi'
 
-HTTPI.adapter = :curb
+HTTPI.log = false
 
 class ForemanClient
   def initialize(base_url)
