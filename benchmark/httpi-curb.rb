@@ -13,5 +13,7 @@ end
 Benchmark.bm do |x|
   x.report { $client = ForemanClient.new(ARGV[0]) }
   x.report { $hosts = $client.get_all_hosts }
-  x.report { $hosts.each {|host| $client.make_api_request("hosts/#{host}") } }
+  x.report { $all = []; $hosts.each {|host| $all << $client.make_api_request("hosts/#{host}") } }
 end
+
+puts "Hosts collected: #{$all.length}"
