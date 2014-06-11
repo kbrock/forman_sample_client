@@ -15,8 +15,11 @@ class ForemanClientPlus
     h = raw.detect {|each| each['name'] == name}
   end
 
+  def fetch_host_details(host)
+    @api.resource(:hosts).action(:show).call(host)['results']
+  end
+
   def get_all_hosts
-    raw = @api.resource(:hosts).action(:index).call()['results']
-    raw.map {|host| host['name']}
+    @api.resource(:hosts).action(:index).call()['results']
   end
 end
