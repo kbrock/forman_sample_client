@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 
 require 'benchmark'
-require './lib/foreman_client'
-require './ext/net_http.rb'
+require './lib/foreman_httpi_client'
+require './ext/net_http_gss.rb' if ENV["KERBEROS"]
 
 HTTPI.adapter = :net_http
 
@@ -12,9 +12,9 @@ if ARGV[0].nil?
 end
 
 Benchmark.bm do |x|
-  x.report { $client = ForemanClient.new(ARGV[0]) }
+  x.report { $client = ForemanHttpiClient.new(ARGV[0]) }
   x.report { $hosts = $client.get_all_hosts }
-  x.report { $all = []; $hosts.each {|host| $all << $client.make_api_request("hosts/#{host}") } }
+  x.report { $all = $hosts.map { |host| $client.fetch_host_details(host) } }
 end
 
 puts "Hosts collected: #{$all.length}"

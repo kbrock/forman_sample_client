@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'benchmark'
-require './lib/foreman_apipie_client'
+require './lib/foreman_api_client'
 require './ext/net_http_gss.rb' if ENV["KERBEROS"]
 
 if ARGV[0].nil?
@@ -10,7 +10,7 @@ if ARGV[0].nil?
 end
 
 Benchmark.bm do |x|
-  x.report { $client = ForemanApipieClient.new(ARGV[0]) }
+  x.report { $client = ForemanApiClient.new(ARGV[0]) }
   x.report { $hosts = $client.get_all_hosts }
   # NOTE: find_host != fetch_host_details
   x.report { $all = $hosts.collect {|host| $client.fetch_host_details(host) } }
